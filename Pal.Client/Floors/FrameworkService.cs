@@ -399,7 +399,7 @@ namespace Pal.Client.Floors
 
         #region Up-/Download
 
-        private async Task DownloadLocationsForTerritory(ushort territoryId)
+        private async Task DownloadLocationsForTerritory(uint territoryId)
         {
             try
             {
@@ -419,7 +419,7 @@ namespace Pal.Client.Floors
             }
         }
 
-        private async Task UploadLocationsForTerritory(ushort territoryId, List<PersistentLocation> locationsToUpload)
+        private async Task UploadLocationsForTerritory(uint territoryId, List<PersistentLocation> locationsToUpload)
         {
             try
             {
@@ -440,8 +440,7 @@ namespace Pal.Client.Floors
             }
         }
 
-        private async Task SyncSeenMarkersForTerritory(ushort territoryId,
-            IReadOnlyList<PersistentLocation> locationsToUpdate)
+        private async Task SyncSeenMarkersForTerritory(uint territoryId, IReadOnlyList<PersistentLocation> locationsToUpdate)
         {
             try
             {

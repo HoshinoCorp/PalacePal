@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using Dalamud.Game;
+using Dalamud.Game.Chat;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Plugin.Services;
@@ -37,18 +38,17 @@ namespace Pal.Client.DependencyInjection
         public void Dispose()
             => _chatGui.ChatMessage -= OnChatMessage;
 
-        private void OnChatMessage(XivChatType type, int timestamp, ref SeString sender, ref SeString seMessage,
-            ref bool isHandled)
+        private void OnChatMessage(IHandleableChatMessage message)
         {
             if (_configuration.FirstUse)
                 return;
 
-            if (type != (XivChatType)2105)
+            if (message.LogKind != (XivChatType)2105)
                 return;
 
-            string message = seMessage.ToString();
+            var text = message.Message.TextValue;
             //PluginLog.Debug($"Message: {message}, floorchanged: {_localizedChatMessages.FloorChanged.ToString()}");
-            if (_localizedChatMessages.FloorChanged.IsMatch(message))
+            if (_localizedChatMessages.FloorChanged.IsMatch(text))
             {
                 //PluginLog.Debug($"Floor changed");
                 _territoryState.PomanderOfSight = PomanderState.Inactive;
@@ -56,22 +56,22 @@ namespace Pal.Client.DependencyInjection
                 if (_territoryState.PomanderOfIntuition == PomanderState.FoundOnCurrentFloor)
                     _territoryState.PomanderOfIntuition = PomanderState.Inactive;
             }
-            else if (message.EndsWith(_localizedChatMessages.MapRevealed))
+            else if (text.EndsWith(_localizedChatMessages.MapRevealed))
             {
                 _territoryState.PomanderOfSight = PomanderState.Active;
             }
-            else if (message.EndsWith(_localizedChatMessages.AllTrapsRemoved))
+            else if (text.EndsWith(_localizedChatMessages.AllTrapsRemoved))
             {
                 _territoryState.PomanderOfSight = PomanderState.PomanderOfSafetyUsed;
             }
-            else if (message.EndsWith(_localizedChatMessages.HoardNotOnCurrentFloor) ||
-                     message.EndsWith(_localizedChatMessages.HoardOnCurrentFloor))
+            else if (text.EndsWith(_localizedChatMessages.HoardNotOnCurrentFloor) ||
+                     text.EndsWith(_localizedChatMessages.HoardOnCurrentFloor))
             {
                 // There is no functional difference between these - if you don't open the marked coffer,
                 // going to higher floors will keep the pomander active.
                 _territoryState.PomanderOfIntuition = PomanderState.Active;
             }
-            else if (message.EndsWith(_localizedChatMessages.HoardCofferOpened))
+            else if (text.EndsWith(_localizedChatMessages.HoardCofferOpened))
             {
                 _territoryState.PomanderOfIntuition = PomanderState.FoundOnCurrentFloor;
             }

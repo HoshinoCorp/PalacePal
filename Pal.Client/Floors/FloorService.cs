@@ -33,7 +33,7 @@ namespace Pal.Client.Floors
         public IReadOnlyCollection<EphemeralLocation> EphemeralLocations => _ephemeralLocations;
         public bool IsImportRunning { get; private set; }
 
-        public void ChangeTerritory(ushort territoryType)
+        public void ChangeTerritory(uint territoryType)
         {
             _ephemeralLocations = new ConcurrentBag<EphemeralLocation>();
 
@@ -51,7 +51,7 @@ namespace Pal.Client.Floors
             }
         }
 
-        public MemoryTerritory? GetTerritoryIfReady(ushort territoryType)
+        public MemoryTerritory? GetTerritoryIfReady(uint territoryType)
         {
             if (typeof(ETerritoryType).IsEnumDefined(territoryType))
                 return GetTerritoryIfReady((ETerritoryType)territoryType);
@@ -68,7 +68,7 @@ namespace Pal.Client.Floors
             return territory;
         }
 
-        public bool IsReady(ushort territoryId) => GetTerritoryIfReady(territoryId) != null;
+        public bool IsReady(uint territoryId) => GetTerritoryIfReady(territoryId) != null;
 
         public bool MergePersistentLocations(
             ETerritoryType territoryType,

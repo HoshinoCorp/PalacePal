@@ -16,7 +16,7 @@ namespace Pal.Client.Scheduled
     internal sealed class QueuedSyncResponse : IQueueOnFrameworkThread
     {
         public required SyncType Type { get; init; }
-        public required ushort TerritoryType { get; init; }
+        public required uint TerritoryType { get; init; }
         public required bool Success { get; init; }
         public required IReadOnlyList<PersistentLocation> Locations { get; init; }
 
