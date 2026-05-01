@@ -43,7 +43,7 @@ namespace Pal.Client.DependencyInjection
             if (_configuration.FirstUse)
                 return;
 
-            if (message.LogKind != (XivChatType)2105)
+            if (message is not { LogKind: XivChatType.SystemMessage, SourceKind: XivChatRelationKind.LocalPlayer })
                 return;
 
             var text = message.Message.TextValue;
