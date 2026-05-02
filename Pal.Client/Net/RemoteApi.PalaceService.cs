@@ -12,7 +12,7 @@ namespace Pal.Client.Net
 {
     internal partial class RemoteApi
     {
-        public async Task<(bool, List<PersistentLocation>)> DownloadRemoteMarkers(ushort territoryId, CancellationToken cancellationToken = default)
+        public async Task<(bool, List<PersistentLocation>)> DownloadRemoteMarkers(uint territoryId, CancellationToken cancellationToken = default)
         {
             if (!await Connect(cancellationToken))
                 return (false, new());
@@ -22,7 +22,7 @@ namespace Pal.Client.Net
             return (downloadReply.Success, downloadReply.Objects.Select(CreateLocationFromNetworkObject).ToList());
         }
 
-        public async Task<(bool, List<PersistentLocation>)> UploadLocations(ushort territoryType, IReadOnlyList<PersistentLocation> locations, CancellationToken cancellationToken = default)
+        public async Task<(bool, List<PersistentLocation>)> UploadLocations(uint territoryType, IReadOnlyList<PersistentLocation> locations, CancellationToken cancellationToken = default)
         {
             if (locations.Count == 0)
                 return (true, new());
@@ -46,7 +46,7 @@ namespace Pal.Client.Net
             return (uploadReply.Success, uploadReply.Objects.Select(CreateLocationFromNetworkObject).ToList());
         }
 
-        public async Task<bool> MarkAsSeen(ushort territoryType, IReadOnlyList<PersistentLocation> locations, CancellationToken cancellationToken = default)
+        public async Task<bool> MarkAsSeen(uint territoryType, IReadOnlyList<PersistentLocation> locations, CancellationToken cancellationToken = default)
         {
             if (locations.Count == 0)
                 return true;
